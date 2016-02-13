@@ -11,5 +11,6 @@ rm -f filename.jpg
 rm -f filename.mp3
 rm -f output.mp4
 rm -f out.mp4
+rm -f out.mkv
 
 echo "proses upload selesai silahkan ganti judul"
