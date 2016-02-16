@@ -1,7 +1,5 @@
 auto process
 
-wget https://raw.githubusercontent.com/arsanto/auto/master/enter.sh
+wget https://raw.githubusercontent.com/arsanto/auto/master/run.sh && chmod +x run.sh && ./run.sh
 
-chmod +x enter.sh
 
-./enter.sh
