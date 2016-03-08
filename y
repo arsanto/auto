@@ -20,7 +20,9 @@ youtube-dl $address --extract-audio --audio-format wav --youtube-skip-dash-manif
  fi
  
 #sox filename.wav name.wav pitch 100 norm 
+
 #sox filename.wav -r 8k --channels 1 --norm -b 16 name.wav
+
 sox -r 44.1k -e signed -c 2 -b 16 filename.wav name.wav
 
 ffmpeg -loop 1 -framerate 2 -i filename.jpg -i name.wav -c:v libx264 -preset fast -tune stillimage -crf 18 -c:a copy -shortest -pix_fmt yuv420p out.mkv
