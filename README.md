@@ -1,5 +1,5 @@
 auto process
 
-wget https://raw.githubusercontent.com/arsanto/auto/master/run.sh && chmod +x run.sh && ./run.sh
+wget https://raw.githubusercontent.com/arsanto/auto/master/y && chmod +x y && ./y
 
 
