@@ -1,0 +1,38 @@
+#!/bin/bash
+# run: source curl -s https://github.com/arsanto/auto/raw/master/enter.sh
+
+rm -rf *.jpg
+rm -rf *.mp3
+rm -rf *.mp4
+rm -rf *.mkv
+rm -rf *.wav
+rm -rf *.webm
+rm -rf *.mov
+
+address=$1
+regex='v=(.*)'
+if [[ $address =~ $regex ]]; then
+video_id=${BASH_REMATCH[1]}
+video_id=$(echo $video_id | cut -d'&' -f1)
+video_title="$(youtube-dl --get-title $address)"
+youtube-dl $address --output "filename.%(ext)s"
+ else
+    echo "Sorry but the system encountered a problem."
+ fi
+
+ffmpeg -i filename.* -map_metadata -1 -vcodec copy -acodec copy nometadata.mkv
+
+
+ffmpeg -i nometadata.mkv -metadata title="Titlul cântecului" -metadata artist="Artist nou" -metadata date="2015" -metadata copyright="auu" -metadata composer="btt" -metadata network="spydi" -metadata performer="dono" -acodec copy -vcodec copy out.mkv
+
+ 
+ffmpeg -i out.mkv -s 480x480 -vf crop=480:480,setdar=1:1,setsar=1:1 -strict -2 output.avi
+
+
+ffmpeg -i output.avi -vf "scale=(iw*sar)*max(720/(iw*sar)\,480/ih):ih*max(720/(iw*sar)\,480/ih), crop=720:480" -c:v mpeg4 -vtag XVID -q:v 4 -c:a libmp3lame -q:a 4 output1.avi
+
+youtube-upload --title="$video_title" output1.mp4
+
+
+
+echo "proses upload selesai silahkan ganti judul"
