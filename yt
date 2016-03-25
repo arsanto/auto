@@ -1,6 +1,14 @@
 #!/bin/bash
 # run: source curl -s https://github.com/arsanto/auto/raw/master/enter.sh
 
+rm -rf *.jpg
+rm -rf *.mp3
+rm -rf *.mp4
+rm -rf *.mkv
+rm -rf *.wav
+rm -rf *.webm
+rm -rf *.mov
+
 address=$1
 regex='v=(.*)'
 if [[ $address =~ $regex ]]; then
@@ -16,7 +24,7 @@ youtube-dl $address --extract-audio --audio-format mp3 --youtube-skip-dash-manif
 
 ffmpeg -i out.mkv -filter:v "setpts=1.50*PTS" -filter:a "atempo=1.25" -strict experimental output.mp4
 
-youtube-upload --title="judul" output.mp4
+youtube-upload --title="$video_title" output.mp4
 
 rm -f filename.jpg
 rm -f filename.mp3
