@@ -7,10 +7,10 @@ ffmpeg -i out.mkv -filter:v "setpts=0.50*PTS" -filter:a "atempo=1.25" -strict ex
 
 youtube-upload --title="judul" output.mp4
 
-rm -f filename.jpg
-rm -f filename.mp3
-rm -f output.mp4
-rm -f out.mp4
-rm -f out.mkv
+rm -f *.jpg
+rm -f *.mp3
+rm -f *.mov
+rm -f *.mp4
+rm -f *.mkv
 
 echo "proses upload selesai silahkan ganti judul"
