@@ -14,3 +14,6 @@ fix
 sed -i -e 's/\r$//' scriptname.sh
 
 ###
+
+
+need bin and  vido 3/27/2016
