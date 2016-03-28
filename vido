@@ -8,14 +8,20 @@ rm -rf *.mkv
 rm -rf *.wav
 rm -rf *.webm
 rm -rf *.mov
+rm -rf *.m4a
 rm -rf filename.*
+
+
 address=$1
 regex='v=(.*)'
 if [[ $address =~ $regex ]]; then
 video_id=${BASH_REMATCH[1]}
 video_id=$(echo $video_id | cut -d'&' -f1)
 video_title="$(youtube-dl --get-title $address)"
-youtube-dl $address --output "filename.%(ext)s"
+youtube-dl $address -f "webm/mp4" -o "filename.%(ext)s"
+
+#youtube-dl $address --output "filename.%(ext)s"
+
  else
     echo "Sorry but the system encountered a problem."
  fi
