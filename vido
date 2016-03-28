@@ -8,6 +8,8 @@ rm -rf *.mkv
 rm -rf *.wav
 rm -rf *.webm
 rm -rf *.mov
+rm -rf *.f141.m4a
+rm -rf *.temp.mp4
 
 address=$1
 regex='v=(.*)'
