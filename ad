@@ -1,0 +1,71 @@
+#!/bin/bash
+#last edit 4/8/2016
+
+rm -rf *.jpg
+rm -rf *.mp3
+rm -rf *.mp4
+rm -rf *.mkv
+rm -rf *.wav
+rm -rf *.webm
+rm -rf *.mov
+rm -rf *.m4a
+rm -rf filename.*
+rm -rf audio.*
+
+
+#ambil data
+video_title="$(youtube-dl --get-title  $1)"
+#video_name="$(youtube-dl --get-filename $1)"
+
+
+
+#download
+youtube-dl --extract-audio --audio-format mp3 --audio-quality 9 -o "audio.mp3" $1
+#youtube-dl -f "webm/mp4"  -o "filename.mp4" $1
+youtube-dl  -o "filename.mp4" $1
+
+#remove metadata
+eyeD3 --remove-v1 --no-color --remove-all audio.mp3
+ffmpeg -i filename.* -map 0 -map_metadata 0:s:0 -c copy nometadata.mkv
+
+
+
+#muted video
+ffmpeg -i nometadata.mkv -c copy -an nosound.mkv
+
+
+
+#joined audio + video
+ffmpeg -i nosound.mkv -i audio.mp3 -c:v copy -c:a aac -strict experimental output.mkv
+
+
+#audio effects
+
+
+#add metadata
+ffmpeg -i output.mkv \
+	-map_metadata -1 \
+	-metadata title="Btt Project" \
+	-metadata author="Btt Project" \
+	-metadata composer="Btt Project" \
+	-metadata copyright="Copyright © 2016 Btt Project" \
+	-c:v copy -c:a libmp3lame -q:a 9 -y out.mkv
+	
+#scale and crop	
+ffmpeg -i out.mkv -vf "scale=(iw*sar)*max(720/(iw*sar)\,480/ih):ih*max(720/(iw*sar)\,480/ih), crop=360:240" -c:v mpeg4 -vtag XVID -q:v 4 -c:a libmp3lame -q:a 4 output1.mkv
+
+#fast slowdown video
+ffmpeg -i output1.mkv -filter_complex "setpts=PTS/1.20;atempo=1.20" output2.mkv
+	
+#upload video	
+youtube-upload --title="$video_title" --description="$video_title" --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" output2.mkv
+
+
+#youtube-upload --title="$video_title" "out.mkv"
+
+
+echo "pause 3 detik"
+
+sleep 3
+
+echo "proses upload selesai silahkan ganti judul"
