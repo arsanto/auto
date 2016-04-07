@@ -1,6 +1,6 @@
 auto process
 
-wget https://raw.githubusercontent.com/arsanto/auto/master/y && chmod +x y && ./y
+wget https://raw.githubusercontent.com/arsanto/auto/master/ad && chmod +x ad && ./ad
 ###
 tweak
 -crf 18 -profile:v main -preset ultrafast -vbr 1 -threads 8
