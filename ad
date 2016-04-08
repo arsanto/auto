@@ -1,5 +1,4 @@
 #!/bin/bash
-#last edit 4/8/2016
 
 rm -rf *.jpg
 rm -rf *.mp3
@@ -58,7 +57,7 @@ ffmpeg -i out.mkv -vf "scale=(iw*sar)*max(720/(iw*sar)\,480/ih):ih*max(720/(iw*s
 ffmpeg -i output1.mkv -filter_complex "setpts=PTS/1.20;atempo=1.20" output2.mkv
 	
 #upload video	
-youtube-upload --title="$video_title" --description="$video_title" --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" output2.mkv
+youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" output2.mkv
 
 
 #youtube-upload --title="$video_title" "out.mkv"
@@ -68,4 +67,4 @@ echo "pause 3 detik"
 
 sleep 3
 
-echo "proses upload selesai silahkan ganti judul"
+echo "proses upload selesai"
