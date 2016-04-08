@@ -1,6 +1,10 @@
 auto process
 
 wget https://raw.githubusercontent.com/arsanto/auto/master/ad && chmod +x ad && ./ad
+
+wget https://raw.githubusercontent.com/arsanto/auto/master/bin && chmod +x bin
+
+wget https://raw.githubusercontent.com/arsanto/playtotxt/master/playlist2links && chmod +x playlist2links
 ###
 tweak
 -crf 18 -profile:v main -preset ultrafast -vbr 1 -threads 8
