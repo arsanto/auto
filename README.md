@@ -24,4 +24,8 @@ need bin , link.txt and ad 3/27/2016
 
 link txt playlist2links
 
+butuh link.txt berisi link video 
+./ad isi command yt
+eksekusi massal ./bin
+install screen
 
