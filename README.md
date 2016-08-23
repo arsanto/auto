@@ -4,7 +4,7 @@ wget https://raw.githubusercontent.com/arsanto/auto/master/ad && chmod +x ad && 
 
 wget https://raw.githubusercontent.com/arsanto/auto/master/bin && chmod +x bin
 
-wget https://raw.githubusercontent.com/arsanto/playtotxt/master/playlist2links && chmod +x playlist2links
+wget https://raw.githubusercontent.com/arsanto/playtotxt/master/pl && chmod +x pl
 ###
 tweak
 -crf 18 -profile:v main -preset ultrafast -vbr 1 -threads 8
