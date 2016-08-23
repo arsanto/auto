@@ -66,8 +66,8 @@ youtube-upload --title="$video_title" --description="Copyright disclaimer! I do 
 #youtube-upload --title="$video_title" "out.mkv"
 
 
-echo "pause 3 detik"
+echo "pause 10 detik"
 
-sleep 3
+sleep 10
 
 echo "proses upload selesai"
