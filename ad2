@@ -25,17 +25,17 @@ youtube-dl  -o "filename.mp4" $1
 
 #remove metadata
 eyeD3 --remove-v1 --no-color --remove-all audio.mp3
-ffmpeg -i filename.* -map 0 -map_metadata 0:s:0 -c copy nometadata.mkv
+ffmpeg -i filename.* -map 0 -map_metadata 0:s:0 -c copy -threads 5 -preset ultrafast -strict -2 nometadata.mkv
 
 
 
 #muted video
-ffmpeg -i nometadata.mkv -c copy -an nosound.mkv
+ffmpeg -i nometadata.mkv -c copy -an -threads 5 -preset ultrafast -strict -2 nosound.mkv
 
 
 
 #joined audio + video
-ffmpeg -i nosound.mkv -i audio.mp3 -c:v copy -c:a aac -strict experimental output.mkv
+ffmpeg -i nosound.mkv -i audio.mp3 -c:v copy -c:a aac -threads 5 -preset ultrafast -strict experimental output.mkv
 
 
 #audio effects
@@ -50,20 +50,26 @@ ffmpeg -i output.mkv \
 	-metadata copyright="Copyright © 2016 Btt Project" \
 	-c:v copy -c:a libmp3lame -q:a 9 -y out.mkv
 	
+#bersihin file
+rm -rf filename.*
+rm -rf output.mkv
+rm -rf nosound.mkv
+rm -rf nometadata.mkv
+	
 #scale and crop	
 #ffmpeg -i out.mkv -vf "scale=(iw*sar)*max(720/(iw*sar)\,480/ih):ih*max(720/(iw*sar)\,480/ih), crop=360:240" -c:v mpeg4 -vtag XVID -q:v 4 -c:a libmp3lame -q:a 4 output1.mkv
 
-#ffmpeg -i out.mkv -vf "crop=in_h*9/16:in_h,scale=-2:400" -t 4 output1.mkv
 
-ffmpeg -i out.mkv -t 1 -vf cropdetect -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1
+#cropblackbars
+cropdetect="$(ffmpeg -ss 13 -i out.mkv -t 1 -vf "cropdetect=24:16:0" -preset ultrafast -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)"
+ffmpeg -i out.mkv -acodec copy -vf $cropdetect -threads 5 -preset ultrafast -strict -2 output1.mkv
 
-ffmpeg -i out.mkv -vf $cropvalue,scale=240:-1 -vframes 1 -qscale:v 2 output1.mkv
 
 #fast slowdown video
-ffmpeg -i output1.mkv -filter_complex "setpts=PTS/1.17;atempo=1.17" output2.mkv
+ffmpeg -i output1.mkv -filter_complex "setpts=PTS/1.17;atempo=1.17" -threads 5 -preset ultrafast -strict -2 output2.mkv
 
 #flip video
-ffmpeg -i output2.mkv -vf "hflip" output3.mkv
+ffmpeg -i output2.mkv -vf "hflip" -threads 5 -preset ultrafast -strict -2 output3.mkv
 	
 #upload video	
 youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" output3.mkv
