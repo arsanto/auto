@@ -1,3 +1,3 @@
 #!/bin/bash
 #
-for word in $(cat playlist_*.txt); do ./ad $word; done
+for word in $(cat playlist_*.txt); do ./ad2 $word; done
