@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo "delete old connection youtube"
+
+rm .youtube-upload-credentials.json
+
+echo "upload test video youtube"
+
+./ad2 https://www.youtube.com/watch?v=Tgk_63b-Mrw
+
+echo "dont forget delete test video upload"
