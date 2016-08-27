@@ -6,6 +6,4 @@ rm .youtube-upload-credentials.json
 
 echo "upload test video youtube"
 
-./ad2 https://www.youtube.com/watch?v=tw8tg3ooXjY
-
-echo "dont forget delete test video upload"
+./ad2 https://www.youtube.com/watch?v=AxQVXbyLrEs
