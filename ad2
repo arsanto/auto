@@ -62,7 +62,7 @@ ffmpeg -i output.mkv \
 
 #cropblackbars
 cropdetect="$(ffmpeg -ss 13 -i out.mkv -t 1 -vf "cropdetect=24:16:0" -preset ultrafast -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)"
-ffmpeg -i out.mkv -acodec copy -vf $cropdetect  output1.mkv
+ffmpeg -i out.mkv -acodec copy -vf $cropdetect -preset ultrafast output1.mkv
 
 rm -rf out.mkv
 
