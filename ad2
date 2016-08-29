@@ -38,7 +38,11 @@ ffmpeg -i nometadata.mkv -c copy -an  nosound.mkv
 ffmpeg -i nosound.mkv -i audio.mp3 -c:v copy -c:a aac  -strict experimental output.mkv
 
 
-#audio effects
+#bersihin file
+rm -rf filename.*
+rm -rf audio.mp3
+rm -rf nosound.mkv
+rm -rf nometadata.mkv
 
 
 #add metadata
@@ -50,11 +54,7 @@ ffmpeg -i output.mkv \
 	-metadata copyright="Copyright © 2016 Btt Project" \
 	-c:v copy -c:a libmp3lame -q:a 9 -y out.mkv
 	
-#bersihin file
-rm -rf filename.*
-rm -rf output.mkv
-rm -rf nosound.mkv
-rm -rf nometadata.mkv
+
 	
 #scale and crop	
 #ffmpeg -i out.mkv -vf "scale=(iw*sar)*max(720/(iw*sar)\,480/ih):ih*max(720/(iw*sar)\,480/ih), crop=360:240" -c:v mpeg4 -vtag XVID -q:v 4 -c:a libmp3lame -q:a 4 output1.mkv
@@ -64,13 +64,19 @@ rm -rf nometadata.mkv
 cropdetect="$(ffmpeg -ss 13 -i out.mkv -t 1 -vf "cropdetect=24:16:0" -preset ultrafast -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)"
 ffmpeg -i out.mkv -acodec copy -vf $cropdetect  output1.mkv
 
+rm -rf out.mkv
+
 
 #fast slowdown video
 ffmpeg -i output1.mkv -filter_complex "setpts=PTS/1.17;atempo=1.17"  output2.mkv
 
+rm -rf output1.mkv
+
 #flip video
 ffmpeg -i output2.mkv -vf "hflip"  output3.mkv
-	
+
+rm -rf output2.mkv
+
 #upload video	
 youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" output3.mkv
 
