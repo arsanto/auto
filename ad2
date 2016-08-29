@@ -65,7 +65,7 @@ cropdetect="$(ffmpeg -ss 13 -i out.mkv -t 1 -vf "cropdetect=24:16:0" -preset ult
 ffmpeg -i out.mkv -acodec copy -vf $cropdetect -preset ultrafast output1.mkv
 
 rm -rf out.mkv
-
+rm -rf output.mkv
 
 #fast slowdown video
 ffmpeg -i output1.mkv -filter_complex "setpts=PTS/1.17;atempo=1.17"  output2.mkv
