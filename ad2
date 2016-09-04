@@ -19,9 +19,10 @@ video_title="$(youtube-dl --get-title  $1)"
 
 
 #download
-youtube-dl --extract-audio --audio-format mp3 --audio-quality 9 -o "audio.mp3" $1
+#youtube-dl --extract-audio --audio-format mp3 --audio-quality 9 -o "audio.mp3" $1
 #youtube-dl -f "webm/mp4"  -o "filename.mp4" $1
 youtube-dl  -o "filename.mp4" $1
+ffmpeg -i filename.* -vn -f mp3 audio.mp3
 
 #remove metadata
 eyeD3 --remove-v1 --no-color --remove-all audio.mp3
@@ -32,10 +33,12 @@ ffmpeg -i filename.* -map 0 -map_metadata 0:s:0 -c copy  nometadata.mkv
 #muted video
 ffmpeg -i nometadata.mkv -c copy -an  nosound.mkv
 
-
+#speed audio
+#sox audio.wav audio1.wav tempo 1.190
+sox --show-progress audio.mp3 audio1.mp3 spitch 1.17
 
 #joined audio + video
-ffmpeg -i nosound.mkv -i audio.mp3 -c:v copy -c:a aac  -strict experimental output.mkv
+ffmpeg -i nosound.mkv -i audio1.mp3 -c:v copy -c:a aac  -strict experimental output.mkv
 
 
 #bersihin file
