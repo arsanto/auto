@@ -35,17 +35,17 @@ ffmpeg -i nometadata.mkv -c copy -an  nosound.mkv
 
 #speed audio
 #sox audio.wav audio1.wav tempo 1.190
-sox --show-progress audio.mp3 audio1.mp3 spitch 1.17
+sox --show-progress audio.mp3 audio1.mp3 pitch 1.17
 
 #joined audio + video
 ffmpeg -i nosound.mkv -i audio1.mp3 -c:v copy -c:a aac  -strict experimental output.mkv
 
 
 #bersihin file
-rm -rf filename.*
-rm -rf audio.mp3
-rm -rf nosound.mkv
-rm -rf nometadata.mkv
+#rm -rf filename.*
+#rm -rf audio.mp3
+#rm -rf nosound.mkv
+#rm -rf nometadata.mkv
 
 
 #add metadata
@@ -67,18 +67,18 @@ ffmpeg -i output.mkv \
 cropdetect="$(ffmpeg -ss 13 -i out.mkv -t 1 -vf "cropdetect=24:16:0" -preset ultrafast -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)"
 ffmpeg -i out.mkv -acodec copy -vf $cropdetect -preset ultrafast output1.mkv
 
-rm -rf out.mkv
-rm -rf output.mkv
+#rm -rf out.mkv
+#rm -rf output.mkv
 
 #fast slowdown video
 ffmpeg -i output1.mkv -filter_complex "setpts=PTS/1.17;atempo=1.17"  output2.mkv
 
-rm -rf output1.mkv
+#rm -rf output1.mkv
 
 #flip video
 ffmpeg -i output2.mkv -vf "hflip"  output3.mkv
 
-rm -rf output2.mkv
+#rm -rf output2.mkv
 
 #upload video	
 youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" output3.mkv
