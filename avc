@@ -31,7 +31,7 @@ avconv -i filename.* -acodec copy -vf $cropdetect  scale.mp4
 
 #speed audio video
 sox --show-progress audio.mp3 output.mp3 tempo 1.60 pitch 500
-avconv -i scale.mp4 -filter:v "setpts=1*PTS" -preset ultrafast speed.mp4
+avconv -i scale.mp4 -filter:v "setpts=1*PTS" -strict experimental -preset ultrafast speed.mp4
 
 
 
