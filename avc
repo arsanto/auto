@@ -20,33 +20,38 @@ video_name="$(youtube-dl --get-filename $1)"
 
 #download
 youtube-dl -f "webm/mp4"  -o "filename.mp4" $1
-youtube-dl  -o "filename.mp4" $1
-avconv -i filename.* -q:a 0 -map a audio.mp3
+#youtube-dl  -o "filename.mp4" $1
+avconv -i filename.* -vn -ab 192k -acodec libmp3lame -ac 2 audio.mp3
 
+
+#cropblackbars
+cropdetect="$(avconv -ss 13 -i filename.* -t 1 -vf "cropdetect=24:16:0" -preset ultrafast -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)"
+avconv -i filename.* -acodec copy -vf $cropdetect  scale.mp4
 
 
 #speed audio video
 sox --show-progress audio.mp3 output.mp3 tempo 1.60 pitch 500
-avconv -i filename.* -filter:v "setpts=1*PTS" speed.mkv
+avconv -i scale.mp4 -filter:v "setpts=1*PTS" -preset ultrafast speed.mp4
 
 
 
 #joined audio + video
-avconv -i speed.mkv -i output.mp3 -c:v copy -c:a copy output.mkv
+avconv -i speed.mp4 -i output.mp3 -c:v copy -c:a copy output.mp4
 
 
 #remove metadata
-avconv -i output.mkv -map_metadata -1 -c:v copy -c:a copy out.mkv
+avconv -i output.mp4 -map_metadata -1 -c:v copy -c:a copy out.mp4
+
 
 
 #add metadata
-avconv -i out.mkv \
+avconv -i out.mp4 \
 	-map_metadata -1 \
 	-metadata title="Btt Project" \
 	-metadata author="Btt Project" \
 	-metadata composer="Btt Project" \
 	-metadata copyright="Copyright © 2016 Btt Project" \
-	-c:v copy -c:a libmp3lame -q:a 9 -y addmetadata.mkv
+	-c:v copy -c:a libmp3lame -q:a 9 -y addmetadata.mp4
 	
 	
 
@@ -54,21 +59,14 @@ avconv -i out.mkv \
 #avconv -i addmetadata.mkv -vf "scale=(iw*sar)*max(720/(iw*sar)\,480/ih):ih*max(720/(iw*sar)\,480/ih), crop=360:240" -c:v mpeg4 -vtag XVID -q:v 4 -c:a libmp3lame -q:a 4 scale.mkv
 
 
-#cropblackbars
-#cropdetect="$(avconv -ss 13 -i addmetadata.mkv -t 1 -vf "cropdetect=24:16:0" -preset ultrafast -f null - 2>&1 | awk '/crop/ { print $NF }' | tail -1)"
-#avconv -i addmetadata.mkv -acodec copy -vf $cropdetect  scale.mkv
 
-avconv -i addmetadata.mkv -i bg.gif \
--filter_complex "[0:v][1:v] overlay=25:25:enable='between(t,0,20)'" \
--pix_fmt yuv420p -c:a copy \
-scale.mkv
 
 
 #flip video
 #avconv -i output2.mkv -vf "hflip"  output3.mkv
 	
 #upload video	
-youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" "scale.mkv"
+youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="private" --playlist "mopi" "addmetadata.mp4"
 
 
 #youtube-upload --title="$video_title" "out.mkv"
