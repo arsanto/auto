@@ -8,6 +8,9 @@ wget https://raw.githubusercontent.com/arsanto/playtotxt/master/pl && chmod +x p
 
 wget https://raw.githubusercontent.com/arsanto/auto/master/link.txt && chmod +x link.txt
 
+wget https://raw.githubusercontent.com/arsanto/auto/master/link.txt && chmod +x link.txt
+
+wget https://raw.githubusercontent.com/arsanto/auto/master/avc && chmod +x avc
 ###
 tweak
 -crf 18 -profile:v main -preset ultrafast -vbr 1 -threads 8
