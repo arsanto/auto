@@ -21,7 +21,7 @@ video_title="$(youtube-dl --get-title  $1)"
 #download
 #youtube-dl --extract-audio --audio-format mp3 --audio-quality 9 -o "audio.mp3" $1
 #youtube-dl -f "webm/mp4"  -o "filename.mp4" $1
-youtube-dl  -o "filename.mp4" $1
+youtube-dl  -o "filename.mkv" $1
 ffmpeg -i filename.* -vn -f mp3 audio.mp3
 
 #remove metadata
