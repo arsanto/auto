@@ -24,7 +24,7 @@ video_title="$(youtube-dl --get-title  $1)"
 youtube-dl  -o "filename.mkv" $1
 
 ffmpeg \
-	-i "filename.*" -f lavfi -i "anoisesrc=d=7200:c=white:r=44100:a=0.5" \
+	-i filename.* -f lavfi -i "anoisesrc=d=7200:c=white:r=44100:a=0.5" \
 	-map_metadata -1 \
 	-metadata title="GNG Project" \
 	-metadata author="GNG Project" \
