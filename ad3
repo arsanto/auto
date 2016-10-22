@@ -37,12 +37,16 @@ ffmpeg \
 	-metadata:s:a:0 language="eng" \
 	-metadata:s:a:0 copyright="Copyright 2016 GNG Project" \
 	-filter_complex " \
-		[0:v]setpts=PTS/(25*1100/24000),scale=854*0.58:480*0.60,setsar=1,curves=blue='0/0 0.5/0.58 1/1',smartblur[v]; \
+		[0:v]setpts=PTS/(25*1100/24000),crop="iw/3.5:ih/3.5",scale=854*0.58:480*0.60,setsar=1,curves=blue='0/0 0.5/0.58 1/1',smartblur[v]; \
 		[0:a]asetrate=r=24000/850/25*44100,atempo=25*850/24000,atempo=25*1100/24000,volume=1:precision=fixed,earwax,bass[a1]; \
 		[1:a]volume=0.01:precision=fixed,aphaser,aresample=44100[a2]; \
 		[a1][a2]amix=inputs=2:duration=shortest,aemphasis=level_in=1:level_out=1.5:mode=production:type=cd,aresample=48000[a]; \
 		[v][a]concat=n=1:v=1:a=1[out]" \
 	-map "[out]" \
 	-ac 2 -c:v libx264 -c:a libmp3lame -y "output.mkv"
+	
+ffmpeg -y -i output.mkv -af "pan=stereo|c0<0*c0+c1|c1<0*c0+c1,aeval=-val(0)|val(1),volume=1.6" -filter_complex "scale=1280:720,setdar=16/9" -vcodec libx264 -pix_fmt yuv420p -r 30 -g 60 -b:v 1400k -profile:v main -level 3.1 -acodec libmp3lame -b:a 128k -ar 44100 -threads 0 -preset superfast "output1.mkv"
+	
+touch -a -m -t 201212180130.09 output1.mkv
   
-  youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="unlisted" --playlist "funny" "output.mkv"
+youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="unlisted" --playlist "funny" "output1.mkv"
