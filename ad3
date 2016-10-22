@@ -49,4 +49,4 @@ ffmpeg -y -i output.mkv -af "pan=stereo|c0<0*c0+c1|c1<0*c0+c1,aeval=-val(0)|val(
 	
 touch -a -m -t 201212180130.09 output1.mkv
   
-youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="unlisted" --playlist "funny" "output1.mkv"
+youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --privacy="unlisted" --playlist "funny" "output1.mkv"
