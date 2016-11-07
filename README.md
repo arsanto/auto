@@ -1,5 +1,7 @@
 auto process
 
+wget https://raw.githubusercontent.com/arsanto/auto/master/ad3 && chmod +x ad3
+
 wget https://raw.githubusercontent.com/arsanto/auto/master/ad2 && chmod +x ad2
 
 wget https://raw.githubusercontent.com/arsanto/auto/master/bin && chmod +x bin
