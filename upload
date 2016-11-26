@@ -1,0 +1,70 @@
+#!/bin/bash
+
+rm -rf *.jpg
+rm -rf *.mp3
+rm -rf *.mp4
+rm -rf *.mkv
+rm -rf *.wav
+rm -rf *.webm
+rm -rf *.mov
+rm -rf *.m4a
+rm -rf filename.*
+rm -rf audio.*
+
+
+#ambil data
+video_title="$(youtube-dl --get-title  $1)"
+#video_name="$(youtube-dl --get-filename $1)"
+
+
+
+#download
+#youtube-dl --extract-audio --audio-format mp3 --audio-quality 9 -o "audio.mp3" $1
+#youtube-dl -f "webm/mp4"  -o "filename.mp4" $1
+youtube-dl  -o "filename.mkv" $1
+
+sleep 20
+
+
+ ffmpeg \
+	-i filename.* -f lavfi -i "anoisesrc=d=7200:c=white:r=44100:a=0.5" \
+	-map_metadata -1 \
+	-metadata title="GNG Project" \
+	-metadata author="GNG Project" \
+	-metadata composer="GNG Project" \
+	-metadata language="eng" \
+	-metadata copyright="Copyright 2016 GNG Project" \
+	-metadata:s:a:0 title="GNG Project" \
+	-metadata:s:a:0 author="GNG Project" \
+	-metadata:s:a:0 composer="GNG Project" \
+	-metadata:s:a:0 language="eng" \
+	-metadata:s:a:0 copyright="Copyright 2016 GNG Project" \
+	-metadata artist="GNG Project" \
+	-metadata album_artist="GNG Project" \
+	-metadata album="GNG Project" \
+	-metadata date="GNG Project" \
+	-metadata track="GNG Project" \
+	-metadata genre="GNG Project" \
+	-metadata publisher="GNG Project" \
+	-metadata encoded_by="GNG Project" \
+	-metadata performer="GNG Project" \
+	-metadata TIT1="GNG Project" \
+	-metadata TIT3="GNG Project" \
+	-metadata disc="GNG Project" \
+	-metadata TKEY="GNG Project" \
+	-metadata TBPM="GNG Project" \
+	-metadata encoder="GNG Project" \
+	-filter_complex " \
+		[0:v]yadif=0:-1:0,crop="iw/5:ih/2",setpts=PTS/(25*1100/24000),split[v1][v2]; \
+		[v1]scale=1280:720,boxblur=lp=13[bg]; \
+		[v2]scale=1080:720[fg]; \
+		[bg][fg]overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2,setdar=16/9[v]; \
+		[0:a]asetrate=r=24000/850/25*44100,atempo=25*970/24000,volume=1:precision=fixed,earwax,bass[a1]; \
+		[1:a]volume=0.01:precision=fixed,aphaser,aresample=44100[a2]; \
+		[a1][a2]amix=inputs=2:duration=shortest,aemphasis=level_in=1:level_out=1.5:mode=production:type=cd,aresample=48000,volume=1.6[a]; \
+		[v][a]concat=n=1:v=1:a=1[out]" \
+	-map "[out]" \
+	-vcodec libx264 -pix_fmt yuv420p -r 30 -g 60 -b:v 1400k -profile:v main -level 3.1 -acodec libmp3lame -b:a 128k -preset ultrafast output.mkv
+	
+  
+youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --privacy="unlisted" --playlist "funny" "output.mkv"
