@@ -1,9 +1,24 @@
 #!/bin/bash
 
-echo "delete old connection youtube"
+echo "menghapus file .json untuk ganti akun youtube baru"
+
+echo "=================================================="
+echo "=================================================="
+echo "=================================================="
+echo "=================================================="
+echo "=================================================="
+sleep 10
 
 rm .youtube-upload-credentials.json
 
-echo "upload test video youtube"
 
-./ad2 https://www.youtube.com/watch?v=AxQVXbyLrEs
+
+echo "upload test video youtube"
+echo "=================================================="
+echo "=================================================="
+echo "=================================================="
+echo "=================================================="
+echo "=================================================="
+sleep 10
+
+./upload https://www.youtube.com/watch?v=AxQVXbyLrEs
