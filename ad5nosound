@@ -1,0 +1,63 @@
+#!/bin/bash
+
+rm -rf *.jpg
+rm -rf *.mp3
+rm -rf *.mp4
+rm -rf *.mkv
+rm -rf *.wav
+rm -rf *.webm
+rm -rf *.mov
+rm -rf *.m4a
+rm -rf filename.*
+rm -rf audio.*
+
+
+#ambil data
+video_title="$(youtube-dl --get-title  $1)"
+#video_name="$(youtube-dl --get-filename $1)"
+
+
+
+#download
+#youtube-dl --extract-audio --audio-format mp3 --audio-quality 9 -o "audio.mp3" $1
+#youtube-dl -f "webm/mp4"  -o "filename.mp4" $1
+youtube-dl  -o "filename.mkv" $1
+
+ ffmpeg \
+	-i filename.* -f lavfi -i "anoisesrc=d=7200:c=white:r=44100:a=0.5" \
+	-map_metadata -1 \
+	-metadata title="GNG Project" \
+	-metadata author="GNG Project" \
+	-metadata composer="GNG Project" \
+	-metadata language="eng" \
+	-metadata copyright="Copyright 2016 GNG Project" \
+	-metadata:s:a:0 title="GNG Project" \
+	-metadata:s:a:0 author="GNG Project" \
+	-metadata:s:a:0 composer="GNG Project" \
+	-metadata:s:a:0 language="eng" \
+	-metadata:s:a:0 copyright="Copyright 2016 GNG Project" \
+	-metadata artist="GNG Project" \
+	-metadata album_artist="GNG Project" \
+	-metadata album="GNG Project" \
+	-metadata date="GNG Project" \
+	-metadata track="GNG Project" \
+	-metadata genre="GNG Project" \
+	-metadata publisher="GNG Project" \
+	-metadata encoded_by="GNG Project" \
+	-metadata performer="GNG Project" \
+	-metadata TIT1="GNG Project" \
+	-metadata TIT3="GNG Project" \
+	-metadata disc="GNG Project" \
+	-metadata TKEY="GNG Project" \
+	-metadata TBPM="GNG Project" \
+	-metadata encoder="GNG Project" \
+	-filter_complex " \
+[0:v]yadif=0:-1:0,crop="iw/1:ih/1",split[v1][v2]; \
+ [v1]scale=1280:720,boxblur=lp=13[bg]; \
+ [v2]scale=1080:720[fg]; \
+ [bg][fg]overlay=main_w/2-overlay_w/2:main_h/2-overlay_h/2,setdar=16/9[video]" \
+ -map "[video]" -c:v libx264 -preset ultrafast -crf 20 -c:a copy \
+ output.mkv
+	
+  
+youtube-upload --title="$video_title" --description="Copyright disclaimer! I do NOT own this $video_title video/song or the image featured in the video. All rights belong to it's rightful owner/owner's.No copyright infringement intended," --category=Music --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --privacy="unlisted" --playlist "funny" "output.mkv"
