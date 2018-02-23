@@ -1,5 +1,5 @@
 auto process
-
+wget https://github.com/arsanto/auto/raw/master/nds_bg.mp4
 wget https://raw.githubusercontent.com/arsanto/auto/master/ad3 && chmod +x ad3
 
 wget https://raw.githubusercontent.com/arsanto/auto/master/ad2 && chmod +x ad2
