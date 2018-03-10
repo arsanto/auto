@@ -1,0 +1,39 @@
+#!/bin/bash
+
+rm -rf *.jpg
+rm -rf *.mp3
+rm -rf *.mkv
+rm -rf *.wav
+rm -rf *.webm
+rm -rf *.mov
+rm -rf *.m4a
+rm -rf filename.*
+rm -rf audio.*
+
+
+#ambil data
+video_title="$(youtube-dl --get-title  $1)"
+#video_name="$(youtube-dl --get-filename $1)"
+
+
+
+#download
+#youtube-dl --extract-audio --audio-format mp3 --audio-quality 9 -o "audio.mp3" $1
+#youtube-dl -f "webm/mp4"  -o "filename.mp4" $1
+youtube-dl  -o "filename.mp4" $1
+#ffmpeg -i filename.* -vn -f mp3 audio.mp3
+
+#ffmpeg -y -ss 00:00:8 -i filename.* -filter_complex "[0:v]pad=iw+4:ih+4:2:2:color=white, scale=480:275, setdar=dar=16/9[v1]; movie=nds_bg.mp4:loop=999,setpts=N/(FRAME_RATE*TB), scale=854:480[v2] ;[v2][v1]overlay=shortest=1:x=360:y=190;[0:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,asetrate=9/10*44100,atempo=10/9,lowpass=f=2500,highpass=f=400,volume=6,bass=g=-30,equalizer=f=10.5:width_type=o:width=1:g=-30, equalizer=f=31.5:width_type=o:width=1:g=-30,equalizer=f=63:width_type=o:width=1:g=-10, equalizer=f=125:width_type=o:width=1:g=-20,equalizer=f=250:width_type=o:width=1:g=-1.5,equalizer=f=500:width_type=o:width=1:g=-20,equalizer=f=1000:width_type=o:width=1:g=-20,equalizer=f=8000:width_type=o:width=3:g=1,equalizer=f=16000:width_type=o:width=3:g=1" -vcodec libx264 -pix_fmt yuv420p -r 30 -g 60 -b:v 1400k -shortest -acodec libmp3lame -b:a 128k -ar 44100 -preset ultrafast output.mp4
+ffmpeg -y -ss 00:00:8 -i filename.* -filter_complex "[0:v]pad=iw+4:ih+4:2:2:color=white, scale=710:381, setdar=dar=16/9[v1]; movie=720_bg.mp4:loop=999,setpts=N/(FRAME_RATE*TB), scale=1280:720[v2] ;[v2][v1]overlay=shortest=1:x=510:y=260;[0:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,asetrate=9/10*44100,atempo=10/9,lowpass=f=2500,highpass=f=400,volume=6,bass=g=-30,equalizer=f=10.5:width_type=o:width=1:g=-30, equalizer=f=31.5:width_type=o:width=1:g=-30,equalizer=f=63:width_type=o:width=1:g=-10, equalizer=f=125:width_type=o:width=1:g=-20,equalizer=f=250:width_type=o:width=1:g=-1.5,equalizer=f=500:width_type=o:width=1:g=-20,equalizer=f=1000:width_type=o:width=1:g=-20,equalizer=f=8000:width_type=o:width=3:g=1,equalizer=f=16000:width_type=o:width=3:g=1" -vcodec libx264 -pix_fmt yuv420p -r 30 -g 60 -b:v 1400k -shortest -acodec libmp3lame -b:a 128k -ar 44100 -preset veryfast output.mp4
+#upload video	
+youtube-upload  --title="$video_title" --description="First of all, THANK YOU for watching this video! If you like my version of $video_title, please give this video a thumbs up and comment below. Don't forget to subscribe for more videos and share this video to your family and friends!" --category="People & Blogs" --tags="$video_title" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="public" --playlist="Viral Play" "output.mp4"
+
+
+#youtube-upload --title="video_title" --category="People & Blogs" "output.mp4"
+
+
+echo "pause 10 detik"
+
+sleep 10
+
+echo "proses upload selesai"
