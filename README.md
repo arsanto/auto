@@ -6,7 +6,8 @@ wget https://github.com/arsanto/auto/raw/master/nds_bg.mp4
 wget https://raw.githubusercontent.com/arsanto/auto/master/tai1 && chmod +x tai1
 
 
-wget https://github.com/arsanto/auto/raw/master/720_.mp4
+
+wget https://github.com/arsanto/auto/raw/master/720_bg.mp4
 wget https://raw.githubusercontent.com/arsanto/auto/master/tai2 && chmod +x tai2
 
 
