@@ -31,7 +31,7 @@ youtube-dl --extract-audio --audio-format mp3 --audio-quality 0 --write-thumbnai
 
 #joined audio + video + gambar
 ffmpeg -i audio.mp3 -loop 1 -i audio.jpg -filter_complex \
-"[0:a]showwaves=s=1920x1080:mode=cline:colors=random[fg]; \
+"[0:a]showwaves=s=960x220:mode=cline:colors=random[fg]; \
  [1:v]scale=960:-1,crop=iw:540[bg]; \
  [bg][fg]overlay=shortest=1:main_h-overlay_h-30,format=yuv420p[out]" \
 -map "[out]" -map 0:a -c:v libx264 -preset fast -crf 18 -c:a libopus output.mkv
