@@ -1,0 +1,64 @@
+#!/bin/bash
+
+rm -rf *.jpg
+rm -rf *.mp3
+rm -rf *.mkv
+rm -rf *.mp4
+rm -rf *.wav
+rm -rf *.webm
+rm -rf *.mov
+rm -rf *.m4a
+rm -rf filename.*
+rm -rf audio.*
+
+
+#ambil data
+video_title="$(youtube-dl --get-title  $1)"
+#video_name="$(youtube-dl --get-filename $1)"
+
+
+
+#download
+youtube-dl --extract-audio --audio-format mp3 --audio-quality 0 --write-thumbnail -o "audio.mp3" $1
+#youtube-dl -f "webm/mkv"  -o "filename.mkv" $1
+#youtube-dl  -o "filename.mkv" $1
+#ffmpeg -i filename.* -vn -f mp3 audio.mp3
+
+
+#speed audio
+#sox audio.wav audio1.wav tempo 1.190
+#sox --show-progress audio.mp3 audio1.mp3 pitch 1.17
+
+#joined audio + video + gambar
+ffmpeg -i audio.mp3 -loop 1 -i audio.jpg -filter_complex \
+"[0:a]showwaves=s=1920x1080:mode=cline:colors=random[fg]; \
+ [1:v]scale=960:-1,crop=iw:540[bg]; \
+ [bg][fg]overlay=shortest=1:main_h-overlay_h-30,format=yuv420p[out]" \
+-map "[out]" -map 0:a -c:v libx264 -preset fast -crf 18 -c:a libopus output.mkv
+
+
+
+
+
+#add metadata
+ffmpeg -i output.mkv \
+	-map_metadata -1 \
+	-metadata title="Oke Sons" \
+	-metadata author="Oke Sons" \
+	-metadata composer="Oke Sons" \
+	-metadata copyright="Copyright © 2018 Oke Sons" \
+	-c:v copy -c:a libmp3lame -q:a 9 -y out.mkv
+	
+
+
+#upload video	
+youtube-upload --title="$video_title" --description="karaoke indonesia $video_title 	karaoke dangdut $video_title	karaoke terbaru $video_title	smule karaoke $video_title	karaoke online $video_title		video karaoke $video_title	karaoke download $video_title	play karaoke $video_title	sing karaoke $video_title	youtube karaoke $video_title	google karaoke $video_title	youtube music karaoke $video_title	top karaoke $video_title	video karaoke player $video_title	web karaoke $video_title" --category=Music --tags="karaoke online,video karaoke,karaoke download,play karaoke,sing karaoke,youtube karaoke,google karaoke,youtube music karaoke,
+top karaoke,video karaoke player,web karaoke,karaoke indonesia,karaoke dangdut,karaoke terbaru" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="public" --playlist "Oke Sons" out.mkv
+
+
+
+echo "pause 10 detik"
+
+sleep 10
+
+echo "proses upload selesai"
