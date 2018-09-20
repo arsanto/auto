@@ -1,0 +1,52 @@
+#!/bin/bash
+
+
+rm -rf *.mp3
+rm -rf *.mp4
+
+
+
+#ambil data
+video_title="$(youtube-dl --get-title  $1)"
+#video_name="$(youtube-dl --get-filename $1)"
+
+
+
+#download
+youtube-dl --extract-audio --audio-format mp3 --audio-quality 0 -o "audio.mp3" $1
+
+
+convert -background black -size 3840x2160 \
+-gravity Center \
+-weight 900 \
+-fill white \
+caption:"$video_title" \
+audio.jpg
+
+
+
+ffmpeg -y -i audio.mp3 -loop 1 -i audio.jpg -filter_complex "[0:a]aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo,asetrate=9/10*44100,atempo=10/9,lowpass=f=2500,highpass=f=400,volume=6,bass=g=-30,equalizer=f=10.5:width_type=o:width=1:g=-30, equalizer=f=31.5:width_type=o:width=1:g=-30,equalizer=f=63:width_type=o:width=1:g=-10, equalizer=f=125:width_type=o:width=1:g=-20,equalizer=f=250:width_type=o:width=1:g=-1.5,equalizer=f=500:width_type=o:width=1:g=-20,equalizer=f=1000:width_type=o:width=1:g=-20,equalizer=f=8000:width_type=o:width=3:g=1,equalizer=f=16000:width_type=o:width=3:g=1,showwaves=s=1920x420:mode=cline:colors=yellow[fg];[1:v]scale=(iw*sar)*max(1920/(iw*sar)\,1080/ih):ih*max(1920/(iw*sar)\,1080/ih), crop=1920:1080[bg];[bg][fg]overlay=shortest=1:main_h-overlay_h-30,format=yuv420p[out]" -map "[out]" -map 0:a -vcodec libx264 -pix_fmt yuv420p -r 30 -g 60 -b:v 1400k -shortest -acodec libmp3lame -b:a 128k -ar 44100 -preset ultrafast output.mp4
+
+
+#add metadata
+ffmpeg -y -i output.mp4 \
+	-map_metadata -1 \
+	-metadata title="Oke Sons" \
+	-metadata author="Oke Sons" \
+	-metadata composer="Oke Sons" \
+	-metadata copyright="Copyright © 2018 Oke Sons" \
+	-c:v copy -c:a libmp3lame -q:a 9 -y out.mp4
+	
+
+
+#upload video	
+youtube-upload --title="$video_title" --description="Remix indonesia $video_title 	Remix dangdut $video_title	Remix terbaru $video_title	smule Remix $video_title	Remix online $video_title		video Remix $video_title	Remix download $video_title	play Remix $video_title	sing Remix $video_title	youtube Remix $video_title	google Remix $video_title	youtube music Remix $video_title	top Remix $video_title	video Remix player $video_title	web Remix $video_title" --category=Music --tags="Remix online,video Remix,Remix download,play Remix,sing Remix,youtube Remix,google Remix,youtube music Remix,
+top Remix,video Remix player,web Remix,Remix indonesia,Remix dangdut,Remix terbaru" --recording-date="2011-03-10T15:32:17.0Z" --default-language="en" --default-audio-language="en" --privacy="public" --playlist "Dugem Terbaru" out.mp4
+
+
+
+echo "pause 10 detik"
+
+sleep 10
+
+echo "proses upload selesai"
