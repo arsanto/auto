@@ -1,0 +1,19 @@
+#!/bin/bash
+
+rm -rf file*
+rm input*
+rm -rf *.mp4
+rm -rf *.mp3
+
+
+
+#ambil data
+video_title="$(youtube-dl --get-title  $1)"
+#video_name="$(youtube-dl --get-filename $1)"
+
+
+
+#download
+#youtube-dl  -f best -o "input" $1
+
+youtube-dl -f bestvideo+bestaudio $1
