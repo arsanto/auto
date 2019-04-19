@@ -1,9 +1,12 @@
 auto process
 
+wget https://raw.githubusercontent.com/arsanto/auto/master/dl -O /usr/bin/dl && chmod a+x /usr/bin/dl
+ 
+
 
 
 wget https://github.com/arsanto/auto/raw/master/nds_bg.mp4
-wget https://raw.githubusercontent.com/arsanto/auto/master/tai1 && chmod +x tai1
+wget https://raw.githubusercontent.com/arsanto/auto/master/tai1  && chmod +x tai1
 
 
 
