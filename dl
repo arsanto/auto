@@ -16,4 +16,4 @@ video_title="$(youtube-dl --get-title  $1)"
 #download
 #youtube-dl  -f best -o "input" $1
 
-youtube-dl -f bestvideo+bestaudio $1
+youtube-dl -f bestvideo+bestaudio -o "input" $1
