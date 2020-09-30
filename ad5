@@ -8,8 +8,8 @@ video_title="$(youtube-dl --get-title  $1)"
 
 
 #download
-youtube-dl -f bestvideo+bestaudio $1
-
+#youtube-dl -f bestvideo+bestaudio $1
+youtube-dl -f best $1
 
 
 echo "pause 10 detik"
